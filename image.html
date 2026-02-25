@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daft Punk AR – Image Tracking</title>
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- A-Frame + MindAR Image -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body class="image-body">
+    <nav class="image-nav" aria-label="Image tracking controls">
+      <a href="index.html" class="dp-chip image-back" aria-label="Go back to home">
+        Go back
+      </a>
+    </nav>
+
+    <a-scene
+      mindar-image="imageTargetSrc: assets/targets.mind; maxTrack: 1; uiLoading: yes; uiScanning: yes; uiError: yes;"
+      embedded
+      color-space="sRGB"
+      renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      style="width: 100vw; height: 100vh;"
+    >
+      <a-assets>
+        <!-- Echte album covers (pas de bestandsnamen aan indien nodig) -->
+        <img id="album0" src="assets/album 1.jpg" />
+        <img id="album1" src="assets/album 2.jpg" />
+        <img id="album2" src="assets/album 3.jpg" />
+        <img id="album3" src="assets/album 4.jpg" />
+
+        <!-- Vinyl model used on all targets -->
+        <a-asset-item id="vinylModel" src="assets/vinyl_record.glb"></a-asset-item>
+
+        <!-- Audio voor alle targets -->
+        <audio id="song1-audio" src="assets/song 1.mp3" preload="auto"></audio>
+        <audio id="song2-audio" src="assets/song 2.mp3" preload="auto"></audio>
+        <audio id="song3-audio" src="assets/song 3.mp3" preload="auto"></audio>
+        <audio id="song4-audio" src="assets/song 4.mp3" preload="auto"></audio>
+      </a-assets>
+
+      <!-- Eenvoudige verlichting -->
+      <a-entity light="type: ambient; intensity: 0.9; color: #ffffff"></a-entity>
+      <a-entity
+        light="type: directional; intensity: 1.4; color: #ffffff"
+        position="0 1 1"
+      ></a-entity>
+
+      <!-- MindAR image camera -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Target 0: Album cover + titel + audio -->
+      <a-entity id="album-target-0" mindar-image-target="targetIndex: 0">
+        <!-- Plaats hier je eerste album cover -->
+        <a-plane
+          position="0 0.01 0"
+          rotation="0 0 0"
+          width="1"
+          height="1"
+          src="#album0"
+        >
+        </a-plane>
+        <!-- Vinyl half sticking out behind the cover -->
+        <!-- Wrapper sets the "lying flat" orientation; child spins like a record -->
+        <a-entity
+          position="0 0.5 -0.05"
+          rotation="-90 0 0"
+          animation="property: position; dir: alternate; to: 0 0.3 -0.05; loop: true; dur: 1600; easing: easeInOutSine"
+        >
+          <a-gltf-model
+            src="#vinylModel"
+            rotation="0 0 0"
+            scale="31 31 31"
+            animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+          ></a-gltf-model>
+        </a-entity>
+        <!-- Placeholder albumtitel (pas de value aan) -->
+        <a-entity
+          color-cycle="speed: 1.1; phase: 0"
+          text="value: Lose Yourself to Dance; align: center; color: #ffffff; width: 4"
+          position="0 -0.7 0.01"
+          rotation="0 0 0"
+        ></a-entity>
+
+        <!-- Sound player entity for song 1 -->
+        <a-entity
+          id="song1-player"
+          sound="src: #song1-audio; autoplay: false; loop: true; positional: false"
+        ></a-entity>
+      </a-entity>
+
+      <!-- Target 1: Album cover + titel + audio -->
+      <a-entity id="album-target-1" mindar-image-target="targetIndex: 1">
+        <a-plane
+          position="0 0.01 0"
+          rotation="0 0 0"
+          width="1"
+          height="1"
+          src="#album1"
+        >
+        </a-plane>
+        <a-entity
+          position="0 0.5 -0.05"
+          rotation="-90 0 0"
+          animation="property: position; dir: alternate; to: 0 0.3 -0.05; loop: true; dur: 1600; easing: easeInOutSine"
+        >
+          <a-gltf-model
+            src="#vinylModel"
+            rotation="0 0 0"
+            scale="31 31 31"
+            animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity
+          color-cycle="speed: 1.1; phase: 1.2"
+          text="value: Around the World; align: center; color: #ffffff; width: 4"
+          position="0 -0.7 0.01"
+          rotation="0 0 0"
+        ></a-entity>
+
+        <!-- Sound player entity for song 2 -->
+        <a-entity
+          id="song2-player"
+          sound="src: #song2-audio; autoplay: false; loop: true; positional: false"
+        ></a-entity>
+      </a-entity>
+
+      <!-- Target 2: Album cover + titel + audio -->
+      <a-entity id="album-target-2" mindar-image-target="targetIndex: 2">
+        <a-plane
+          position="0 0.01 0"
+          rotation="0 0 0"
+          width="1"
+          height="1"
+          src="#album2"
+        >
+        </a-plane>
+        <a-entity
+          position="0 0.5 -0.05"
+          rotation="-90 0 0"
+          animation="property: position; dir: alternate; to: 0 0.3 -0.05; loop: true; dur: 1600; easing: easeInOutSine"
+        >
+          <a-gltf-model
+            src="#vinylModel"
+            rotation="0 0 0"
+            scale="31 31 31"
+            animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity
+          color-cycle="speed: 1.1; phase: 2.4"
+          text="value: One More Time; align: center; color: #ffffff; width: 4"
+          position="0 -0.7 0.01"
+          rotation="0 0 0"
+        ></a-entity>
+
+        <!-- Sound player entity for song 3 -->
+        <a-entity
+          id="song3-player"
+          sound="src: #song3-audio; autoplay: false; loop: true; positional: false"
+        ></a-entity>
+      </a-entity>
+
+      <!-- Target 3: Album cover + titel + audio -->
+      <a-entity id="album-target-3" mindar-image-target="targetIndex: 3">
+        <a-plane
+          position="0 0.01 0"
+          rotation="0 0 0"
+          width="1"
+          height="1"
+          src="#album3"
+        >
+        </a-plane>
+        <a-entity
+          position="0 0.5 -0.05"
+          rotation="-90 0 0"
+          animation="property: position; dir: alternate; to: 0 0.3 -0.05; loop: true; dur: 1600; easing: easeInOutSine"
+        >
+          <a-gltf-model
+            src="#vinylModel"
+            rotation="0 0 0"
+            scale="31 31 31"
+            animation="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity
+          color-cycle="speed: 1.1; phase: 3.6"
+          text="value: Get Lucky; align: center; color: #ffffff; width: 4"
+          position="0 -0.7 0.01"
+          rotation="0 0 0"
+        ></a-entity>
+
+        <!-- Sound player entity for song 4 -->
+        <a-entity
+          id="song4-player"
+          sound="src: #song4-audio; autoplay: false; loop: true; positional: false"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script src="scripts/image.js"></script>
+  </body>
+</html>
+

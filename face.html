@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daft Punk AR – Face Tracking</title>
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- A-Frame + MindAR Face -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-face-aframe.prod.js"></script>
+  </head>
+  <body class="face-body">
+    <nav class="face-nav" aria-label="Face tracking controls">
+      <a href="index.html" class="dp-chip face-back" aria-label="Go back to home">
+        Go back
+      </a>
+      <button
+        id="helmet-toggle"
+        class="dp-btn face-toggle face-toggle--thomas"
+        type="button"
+      >
+        Switch helmet
+      </button>
+    </nav>
+
+    <!-- Fullscreen AR scene -->
+    <a-scene
+      mindar-face="autoStart: true; uiLoading: yes; uiError: yes; uiScanning: yes"
+      embedded
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      style="width: 100vw; height: 100vh;"
+    >
+      <a-assets>
+        <a-asset-item id="manuelModel" src="assets/manuel_helmet.glb"></a-asset-item>
+        <a-asset-item id="thomasModel" src="assets/thomas_helmet.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- MindAR face camera -->
+      <a-camera active="false" position="0 0 0"></a-camera>
+
+      <!-- Face anchor for helmets (around the head / face center) -->
+      <a-entity mindar-face-target="anchorIndex: 1">
+        <!-- Manuel helmet (starts hidden) -->
+        <a-gltf-model
+          id="manuel-helmet"
+          src="#manuelModel"
+          position="0 0.3 -0.7"
+          rotation="0 0 0"
+          scale="3.5 3.5 3.5"
+          visible="false"
+        ></a-gltf-model>
+
+        <!-- Thomas helmet (default visible) -->
+        <a-gltf-model
+          id="thomas-helmet"
+          src="#thomasModel"
+          position="0 0.1 -0.8"
+          rotation="0 0 0"
+          scale="2.3 2.3 2.3"
+        ></a-gltf-model>
+      </a-entity>
+
+      <!-- Left eye anchor: DAFT -->
+      <a-entity mindar-face-target="anchorIndex: 33">
+        <a-entity
+          color-cycle="speed: 1.2; phase: 0"
+          text="value: DAFT; align: center; color: #00fff0; width: 1"
+          scale="2.3 2.3 2.3"
+          position="0.1 -0.2 0.5"
+        ></a-entity>
+      </a-entity>
+
+      <!-- Right eye anchor: PUNK -->
+      <a-entity mindar-face-target="anchorIndex: 263">
+        <a-entity
+          color-cycle="speed: 1.2; phase: 2.1"
+          text="value: PUNK; align: center; color: #ffd700; width: 1"
+          scale="2.3 2.3 2.3"
+          position="-0.1 -0.2 0.5"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script src="scripts/face.js"></script>
+  </body>
+</html>
+
